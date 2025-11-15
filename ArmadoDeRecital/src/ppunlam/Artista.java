@@ -23,20 +23,20 @@ public class Artista {
 		this.maxCanciones = maxCanciones;
 	}
 
-	public static List<Artista> cargarArtistas(String path) {
+	public static List<Artista> cargarArtistas(String path, List<String> nombresArtistasBase) {
 	    List<Artista> artistas = new LinkedList<>();
 
 	    JSONArray array = LectorJSON.cargarArray(path);
 
 	    for (Object o : array) {
 	        JSONObject jsonArtista = (JSONObject) o;
-	        artistas.add(jsonToArtista(jsonArtista));
+	        artistas.add(jsonToArtista(jsonArtista,nombresArtistasBase));
 	    }
 
 	    return artistas;
 	}
 
-	public static Artista jsonToArtista(JSONObject json) {		
+	public static Artista jsonToArtista(JSONObject json, List<String> nombresArtistasBase) {		
 		String nombre = (String) json.get("nombre");
 		
 	    JSONArray rolesArray = (JSONArray) json.get("roles");
@@ -54,7 +54,25 @@ public class Artista {
 	    int costo = ((Long) json.get("costo")).intValue();
 	    int maxCanciones = ((Long) json.get("maxCanciones")).intValue();
 	    
-	    return new Artista(nombre, roles, bandas, costo, maxCanciones);
+	    for(String a: nombresArtistasBase) {
+	    	if(a.equals(nombre)) {
+	    		return new Artista(nombre, roles, bandas, costo, maxCanciones);
+	    	}
+	    }
+	    return new ArtistaExterno(nombre, roles, bandas, costo, maxCanciones);
+	}
+	
+	public static List<String> cargarNombresArtistasBase(String path) {
+		List<String> nombresArtistasBase = new LinkedList<>();
+
+	    JSONArray array = LectorJSON.cargarArray(path);
+
+	    for (Object o : array) {
+	        String nombre = (String) o;
+	        nombresArtistasBase.add(nombre);
+	    }
+
+	    return nombresArtistasBase;
 	}
 	
 	@Override
@@ -78,4 +96,5 @@ public class Artista {
 	public String toString() {
         return "Nombre: " + nombre + "\nRoles: " + roles + "\nBandas: " + bandas + "\nCosto: " + costo + "\nMaxCanciones: " + maxCanciones + "\n";
     }
+
 }
