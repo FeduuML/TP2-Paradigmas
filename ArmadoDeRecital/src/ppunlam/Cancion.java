@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Cancion {
 	String titulo;
-	List<Rol> roles = new LinkedList<>();
+	List<String> roles = new LinkedList<>();
 	
 	
 	

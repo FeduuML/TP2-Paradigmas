@@ -5,7 +5,7 @@ public class Participacion {
 	private Cancion cancion; 
 	private String rol;
 	
-	public Participacion(Artista artista, Cancion cancion, Rol rol) {
+	public Participacion(Artista artista, Cancion cancion, String rol) {
 		this.artista = artista;
 		this.cancion = cancion;
 		this.rol = rol;

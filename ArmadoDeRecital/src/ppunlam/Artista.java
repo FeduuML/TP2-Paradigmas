@@ -78,4 +78,28 @@ public class Artista {
 	public String toString() {
         return "Nombre: " + nombre + "\nRoles: " + roles + "\nBandas: " + bandas + "\nCosto: " + costo + "\nMaxCanciones: " + maxCanciones + "\n";
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public List<String> getBandas() {
+        return bandas;
+    }
+
+    public int getCosto() {
+        return costo;
+    }
+
+    public int getActualCanciones() {
+        return actualCanciones;
+    }
+
+    public int getMaxCanciones() {
+        return maxCanciones;
+    }
 }
