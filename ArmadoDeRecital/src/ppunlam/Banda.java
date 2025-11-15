@@ -8,7 +8,7 @@ public class Banda {
 	List<Artista> artistas = new LinkedList<>();
 	
 	public Banda(String nombre){
-		this.nombre=nombre;
+		this.nombre = nombre;
 	}
 	
 	public void agregarArtista(Artista artista) throws RuntimeException{
