@@ -1,5 +1,7 @@
 package ppunlam;
 
-public class ArtistaExterno {
-
+public class ArtistaExterno extends Artista{
+	public void entrenar() {
+		
+	}
 }
