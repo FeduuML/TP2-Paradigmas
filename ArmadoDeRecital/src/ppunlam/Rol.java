@@ -1,0 +1,5 @@
+package ppunlam;
+
+public enum Rol {
+	GUITARRA_ELECTRICA,BATERIA,BAJO,PIANO,VOZ_PRINCIPAL,VOZ_SECUNDARIA;
+}
