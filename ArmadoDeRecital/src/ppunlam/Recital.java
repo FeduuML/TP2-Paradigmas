@@ -9,8 +9,17 @@ import java.util.List;
 public class Recital {
 	String nombre;
 	List<Cancion> canciones = new LinkedList<>();
-	
-	public void agregarCancion(Cancion cancion) throws RuntimeException{
+    List<Artista> artistasBase = new LinkedList<Artista>();
+    List<ArtistaExterno> artistaExternos =  new LinkedList<ArtistaExterno>();
+
+    public Recital(String nombre, List<Cancion> canciones, List<Artista> artistasBase, List<ArtistaExterno> artistaExternos) {
+        this.nombre = nombre;
+        this.canciones = canciones;
+        this.artistasBase = artistasBase;
+        this.artistaExternos = artistaExternos;
+    }
+
+    public void agregarCancion(Cancion cancion) throws RuntimeException{
 		if(!canciones.contains(cancion))
 			canciones.add(cancion);
 		else
@@ -29,4 +38,16 @@ public class Recital {
 	        System.out.println("----------------------------");
 		}
 	}
+
+    public int calcularCosto(Artista candidato) {
+        for(Artista a :  artistasBase){
+            for(String b : candidato.getBandas()){
+                if(a.getBandas().contains(b)){
+                    return (int)(candidato.getCosto() * 0.5);
+                }
+            }
+        }
+        return candidato.getCosto();
+    }
+
 }

@@ -1,5 +1,6 @@
 package ppunlam;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class App {
@@ -7,12 +8,20 @@ public class App {
 		List<String> nombresArtistasBase = Artista.cargarNombresArtistasBase("in/artistas-discografica.json");
 		
 		List<Artista> artistas = Artista.cargarArtistas("in/artistas.json",nombresArtistasBase);
+        List <ArtistaExterno> artistasExt = new LinkedList<ArtistaExterno>();
+        List <Artista> artistaBase = new LinkedList<Artista>();
+
 		for(Artista a: artistas) {
 			if(a instanceof ArtistaExterno) {
 				System.out.println("Este es un artista externo");
-			}
+                artistasExt.add((ArtistaExterno) a);
+                System.out.println("Artista externo agregado correctamente");
+
+            }
 			else {
 				System.out.println("Este es un artista base");
+                artistaBase.add((Artista) a);
+                System.out.println("ArtistaBase agregado correctamente");
 			}
 			System.out.println(a);
 		}
@@ -30,5 +39,15 @@ public class App {
         }
         else
             System.out.println("No es un artista externo");
+
+        Recital quilmes = new Recital("Quilmes Rock", canciones, artistaBase, artistasExt);
+
+        System.out.println(quilmes);
+        System.out.println(quilmes.calcularCosto(artistasExt.get(0)));
+
+
+
 	}
+
+
 }
