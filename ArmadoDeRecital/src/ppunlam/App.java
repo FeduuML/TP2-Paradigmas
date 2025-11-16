@@ -21,5 +21,14 @@ public class App {
 		for(Cancion c: canciones) {
 			System.out.println(c);
 		}
+
+        Artista a = artistas.get(3);
+        if(a instanceof ArtistaExterno ext) {
+            ext.entrenarArtista("VOZ principal");
+            System.out.println(ext);
+
+        }
+        else
+            System.out.println("No es un artista externo");
 	}
 }
