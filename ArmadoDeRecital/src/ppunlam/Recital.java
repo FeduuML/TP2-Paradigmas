@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Recital {
-	String nombre;
-	List<Cancion> canciones = new LinkedList<>();
-    List<Artista> artistasBase = new LinkedList<Artista>();
-    List<ArtistaExterno> artistaExternos =  new LinkedList<ArtistaExterno>();
+	private String nombre;
+	private List<Cancion> canciones = new LinkedList<>();
+    private List<Artista> artistasBase = new LinkedList<Artista>();
+    private List<ArtistaExterno> artistaExternos =  new LinkedList<ArtistaExterno>();
 
     public Recital(String nombre, List<Cancion> canciones, List<Artista> artistasBase, List<ArtistaExterno> artistaExternos) {
         this.nombre = nombre;
@@ -65,4 +65,24 @@ public class Recital {
 
         return new HashMap<>(rolesRequeridos);
     }
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public List<Cancion> getCanciones() {
+		return canciones;
+	}
+
+	public List<Artista> getArtistasBase() {
+		return artistasBase;
+	}
+
+	public List<ArtistaExterno> getArtistaExternos() {
+		return artistaExternos;
+	}
 }

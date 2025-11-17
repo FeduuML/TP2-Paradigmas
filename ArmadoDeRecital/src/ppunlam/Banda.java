@@ -15,10 +15,10 @@ public class Banda {
 	public void agregarArtista(Artista artista) throws RuntimeException{
 		if(!artistas.contains(artista)) {
 			artistas.add(artista);
-			System.out.println("Artista " + artista.nombre + " agregado en banda " + this.nombre);
+			//System.out.println("Artista '" + artista.nombre + "'" + " agregado a la banda '" + this.nombre + "'");
 		}
 		else
-			throw new RuntimeException("El artista ya esta en la banda");
+			throw new RuntimeException("Artista '" + artista.nombre + "'" + " ya ha sido agregado a la banda '" + this.nombre + "'");
 	}
 
     @Override
@@ -44,11 +44,5 @@ public class Banda {
 	
 	public List<Artista> getArtistas(){
 		return artistas;
-	}
-	
-	public void mostrarArtistas() {
-		for(Artista a : artistas) {
-			System.out.println(a);
-		}
 	}
 }

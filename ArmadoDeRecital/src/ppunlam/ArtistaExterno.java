@@ -7,7 +7,7 @@ public class ArtistaExterno extends Artista{
 		super(nombre, roles, bandas, costo, maxCanciones);
     }
 
-    public void entrenarArtista(Rol rol){
+    public void entrenar(Rol rol){
         if(!roles.contains(rol)){
             if(this.actualCanciones == 0) {
                 roles.add(rol);
