@@ -41,7 +41,7 @@ public class Recital {
 
     public int calcularCosto(Artista candidato) {
         for(Artista a :  artistasBase){
-            for(String b : candidato.getBandas()){
+            for(Banda b : candidato.getBandas()){
                 if(a.getBandas().contains(b)){
                     return (int)(candidato.getCosto() * 0.5);
                 }
@@ -49,5 +49,4 @@ public class Recital {
         }
         return candidato.getCosto();
     }
-
 }

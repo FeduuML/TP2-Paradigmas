@@ -3,19 +3,21 @@ package ppunlam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Artista {
 	String nombre;
 	List<String> roles = new LinkedList<>();
-	List<String> bandas = new LinkedList<>();
+	List<Banda> bandas = new LinkedList<>();
 	int costo;
 	int actualCanciones = 0;
 	int maxCanciones;
 	
-	public Artista(String nombre, List<String> roles, List<String> bandas, int costo, int maxCanciones) {
+	public Artista(String nombre, List<String> roles, List<Banda> bandas, int costo, int maxCanciones) {
 		this.nombre = nombre;
 		this.roles = roles;
 		this.bandas = bandas;
@@ -23,20 +25,20 @@ public class Artista {
 		this.maxCanciones = maxCanciones;
 	}
 
-	public static List<Artista> cargarArtistas(String path, List<String> nombresArtistasBase) {
+	public static List<Artista> cargarArtistas(String path, List<String> nombresArtistasBase, Map<String, Banda> bandas) {
 	    List<Artista> artistas = new LinkedList<>();
 
 	    JSONArray array = LectorJSON.cargarArray(path);
 
 	    for (Object o : array) {
 	        JSONObject jsonArtista = (JSONObject) o;
-	        artistas.add(jsonToArtista(jsonArtista,nombresArtistasBase));
+	        artistas.add(jsonToArtista(jsonArtista,nombresArtistasBase,bandas));
 	    }
 
 	    return artistas;
 	}
 
-	public static Artista jsonToArtista(JSONObject json, List<String> nombresArtistasBase) {		
+	public static Artista jsonToArtista(JSONObject json, List<String> nombresArtistasBase, Map<String, Banda> repo) {		
 		String nombre = (String) json.get("nombre");
 		
 	    JSONArray rolesArray = (JSONArray) json.get("roles");
@@ -46,9 +48,12 @@ public class Artista {
 	    }
 	    
 	    JSONArray bandasArray = (JSONArray) json.get("bandas");
-	    List<String> bandas = new LinkedList<>();
+	    List<Banda> bandas = new LinkedList<>();
+	    Banda b = null;
 	    for(Object r : bandasArray) {
-	    	bandas.add((String) r);
+	    	String nombreBanda = (String) r;
+	    	b = getOrCreateBanda(repo,nombreBanda);
+	    	bandas.add(b);
 	    }
 	    
 	    int costo = ((Long) json.get("costo")).intValue();
@@ -56,10 +61,18 @@ public class Artista {
 	    
 	    for(String a: nombresArtistasBase) {
 	    	if(a.equals(nombre)) {
-	    		return new Artista(nombre, roles, bandas, costo, maxCanciones);
+	    		Artista artista = new Artista(nombre, roles, bandas, costo, maxCanciones);
+	    		for (Banda banda : bandas) {
+	    		    banda.agregarArtista(artista);
+	    		}
+	    		return artista;
 	    	}
 	    }
-	    return new ArtistaExterno(nombre, roles, bandas, costo, maxCanciones);
+	    Artista artista = new ArtistaExterno(nombre, roles, bandas, costo, maxCanciones);
+	    for (Banda banda : bandas) {
+	        banda.agregarArtista(artista);
+	    }
+		return artista;
 	}
 	
 	public static List<String> cargarNombresArtistasBase(String path) {
@@ -73,6 +86,10 @@ public class Artista {
 	    }
 
 	    return nombresArtistasBase;
+	}
+	
+	public static Banda getOrCreateBanda(Map<String, Banda> repo, String nombre) {
+	    return repo.computeIfAbsent(nombre, n -> new Banda(n));
 	}
 	
 	@Override
@@ -105,7 +122,7 @@ public class Artista {
         return roles;
     }
 
-    public List<String> getBandas() {
+    public List<Banda> getBandas() {
         return bandas;
     }
 

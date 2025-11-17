@@ -13,8 +13,10 @@ public class Banda {
 	}
 	
 	public void agregarArtista(Artista artista) throws RuntimeException{
-		if(!artistas.contains(artista))
+		if(!artistas.contains(artista)) {
 			artistas.add(artista);
+			System.out.println("Artista " + artista.nombre + " agregado en banda " + this.nombre);
+		}
 		else
 			throw new RuntimeException("El artista ya esta en la banda");
 	}
@@ -30,4 +32,23 @@ public class Banda {
     public int hashCode() {
         return Objects.hash(nombre, artistas);
     }
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
+	public Banda getBanda() {
+		return this;
+	}
+	
+	public List<Artista> getArtistas(){
+		return artistas;
+	}
+	
+	public void mostrarArtistas() {
+		for(Artista a : artistas) {
+			System.out.println(a);
+		}
+	}
 }
