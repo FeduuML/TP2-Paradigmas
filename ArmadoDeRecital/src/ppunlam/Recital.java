@@ -3,8 +3,10 @@ package ppunlam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Recital {
 	String nombre;
@@ -48,5 +50,19 @@ public class Recital {
             }
         }
         return candidato.getCosto();
+    }
+    
+    public HashMap<Rol,Integer> rolesFaltantes() {
+    	Map<Rol, Integer> rolesRequeridos = new HashMap<>();
+
+        for (Cancion c : canciones) {
+            Map<Rol, Integer> rolesXCancionReq = c.rolesFaltantes();
+
+            for (Map.Entry<Rol, Integer> e : rolesXCancionReq.entrySet()) {
+                rolesRequeridos.merge(e.getKey(), e.getValue(), Integer::sum);
+            }
+        }
+
+        return new HashMap<>(rolesRequeridos);
     }
 }

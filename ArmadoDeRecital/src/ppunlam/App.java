@@ -44,12 +44,11 @@ public class App {
         else
             System.out.println("No es un artista externo");
 
-        /*
+        
         Recital quilmes = new Recital("Quilmes Rock", canciones, artistaBase, artistasExt);
 
         System.out.println(quilmes);
-        System.out.println(quilmes.calcularCosto(artistasExt.get(0)));
-        */
+        //System.out.println(quilmes.calcularCosto(artistasExt.get(0)));
 
         Artista x = artistas.get(0);
         
@@ -62,9 +61,19 @@ public class App {
             System.out.println(c.getNombre());
         }
         
+        
+        
         System.out.println("Roles requeridos de la cancion " + c1.getTitulo());
         c1.agregarParticipacion(x, Rol.GUITARRA_ELECTRICA);
-        c1.rolesFaltantes();
+        System.out.println(c1.rolesFaltantes());
+        
+        System.out.println("Roles requeridos del recital ");
+        System.out.println(quilmes.rolesFaltantes());
 	}
 
 }
+
+/*Roles requeridos del recital 
+{BATERIA=4, PIANO=1, BAJO=4, VOZ_PRINCIPAL=5, GUITARRA_ELECTRICA=4}
+Roles requeridos de la cancion Somebody to Love
+{BATERIA=1, PIANO=1, VOZ_PRINCIPAL=1, BAJO=1}*/

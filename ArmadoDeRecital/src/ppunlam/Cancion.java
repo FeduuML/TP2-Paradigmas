@@ -1,7 +1,9 @@
 package ppunlam;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -57,14 +59,17 @@ public class Cancion {
 	    participaciones.add(p);
 	}
 	
-	public void rolesFaltantes() {
-		for (Rol rolReq : rolesRequeridos.stream().distinct().toList()) {
-			int cantRolOcupado= (int)participaciones.stream().filter(p -> p.getRol() == rolReq).count();
-		    int cantRolTotal=(int) rolesRequeridos.stream().filter(r -> r == rolReq).count();
+	public HashMap<Rol,Integer> rolesFaltantes() {
+		Map<Rol, Integer> rolesReq = new HashMap<>();
+		
+		for (Rol rol : rolesRequeridos.stream().distinct().toList()) {
+			int cantRolOcupado= (int)participaciones.stream().filter(p -> p.getRol() == rol).count();
+		    int cantRolTotal=(int) rolesRequeridos.stream().filter(r -> r == rol).count();
 		    if(cantRolOcupado<cantRolTotal) {
-		    	System.out.println("Se requiere "+ rolReq + " cantidad: " + (cantRolTotal-cantRolOcupado));
+		    	rolesReq.put(rol, cantRolTotal-cantRolOcupado);
 		    }
 		}
+		return new HashMap<>(rolesReq);
 	}
 
 	public static Cancion jsonToCancion(JSONObject json) {		
