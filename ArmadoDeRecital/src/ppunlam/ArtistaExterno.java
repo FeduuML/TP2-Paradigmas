@@ -3,12 +3,11 @@ package ppunlam;
 import java.util.List;
 
 public class ArtistaExterno extends Artista{
-	public ArtistaExterno(String nombre, List<String> roles, List<Banda> bandas, int costo, int maxCanciones) {
+	public ArtistaExterno(String nombre, List<Rol> roles, List<Banda> bandas, int costo, int maxCanciones) {
 		super(nombre, roles, bandas, costo, maxCanciones);
     }
 
-    public void entrenarArtista(String rol){
-        rol = rol.toLowerCase();
+    public void entrenarArtista(Rol rol){
         if(!roles.contains(rol)){
             if(this.actualCanciones == 0) {
                 roles.add(rol);

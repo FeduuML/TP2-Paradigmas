@@ -11,13 +11,13 @@ import java.util.Objects;
 
 public class Artista {
 	String nombre;
-	List<String> roles = new LinkedList<>();
+	List<Rol> roles = new LinkedList<>();
 	List<Banda> bandas = new LinkedList<>();
 	int costo;
 	int actualCanciones = 0;
 	int maxCanciones;
 	
-	public Artista(String nombre, List<String> roles, List<Banda> bandas, int costo, int maxCanciones) {
+	public Artista(String nombre, List<Rol> roles, List<Banda> bandas, int costo, int maxCanciones) {
 		this.nombre = nombre;
 		this.roles = roles;
 		this.bandas = bandas;
@@ -42,9 +42,9 @@ public class Artista {
 		String nombre = (String) json.get("nombre");
 		
 	    JSONArray rolesArray = (JSONArray) json.get("roles");
-	    List<String> roles = new LinkedList<>();
+	    List<Rol> roles = new LinkedList<>();
 	    for(Object r : rolesArray) {
-	    	roles.add((String) r);
+	    	roles.add(Rol.pasarStringRol(r));
 	    }
 	    
 	    JSONArray bandasArray = (JSONArray) json.get("bandas");
@@ -118,12 +118,16 @@ public class Artista {
         return nombre;
     }
 
-    public List<String> getRoles() {
+    public List<Rol> getRoles() {
         return roles;
     }
 
     public List<Banda> getBandas() {
         return bandas;
+    }
+    
+    public boolean tieneRol(Rol r) {
+    	return roles.contains(r);
     }
 
     public int getCosto() {

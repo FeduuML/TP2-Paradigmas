@@ -2,12 +2,10 @@ package ppunlam;
 
 public class Participacion {
 	private Artista artista;
-	private Cancion cancion; 
-	private String rol;
+	private Rol rol;
 	
-	public Participacion(Artista artista, Cancion cancion, String rol) {
+	public Participacion(Artista artista, Rol rol) {
 		this.artista = artista;
-		this.cancion = cancion;
 		this.rol = rol;
 	} 
 	
@@ -17,6 +15,15 @@ public class Participacion {
 		else
 			return true; 
 	}
+
+	public Artista getArtista() {
+		return artista;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
 	
 	
 	

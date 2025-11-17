@@ -13,6 +13,7 @@ public class App {
 		List<Artista> artistas = Artista.cargarArtistas("in/artistas.json",nombresArtistasBase,bandas);
         List<ArtistaExterno> artistasExt = new LinkedList<ArtistaExterno>();
         List<Artista> artistaBase = new LinkedList<Artista>();
+        
 
 		for(Artista a: artistas) {
 			if(a instanceof ArtistaExterno) {
@@ -36,7 +37,7 @@ public class App {
 
         Artista a = artistas.get(0);
         if(a instanceof ArtistaExterno ext) {
-            ext.entrenarArtista("VOZ principal");
+            ext.entrenarArtista(Rol.VOZ_PRINCIPAL);
             System.out.println(ext);
 
         }
@@ -51,6 +52,8 @@ public class App {
         */
 
         Artista x = artistas.get(0);
+        
+        Cancion c1= canciones.get(0);
 
         Banda banda = x.getBandas().get(0);
         
@@ -58,12 +61,10 @@ public class App {
         for (Artista c : banda.getArtistas()) {
             System.out.println(c.getNombre());
         }
+        
+        System.out.println("Roles requeridos de la cancion " + c1.getTitulo());
+        c1.agregarParticipacion(x, Rol.GUITARRA_ELECTRICA);
+        c1.rolesFaltantes();
 	}
-
-	Rol Cantidad
-	
-	Voz principal 1
-	Guitarra 2
-	Bateria 1
 
 }
