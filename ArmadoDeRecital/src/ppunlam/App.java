@@ -20,23 +20,24 @@ public class App {
 
         // ----------------------------- LISTA DE ARTISTAS EXTERNOS -----------------------------
 
-        System.out.println("LISTADO DE ARTISTAS\n");
+       // System.out.println("LISTADO DE ARTISTAS\n");
 
         for (Artista a : artistas) {
             if (a instanceof ArtistaExterno) {
-                System.out.println("Este es un artista externo");
+               // System.out.println("Este es un artista externo");
                 artistasExt.add((ArtistaExterno) a);
                 // System.out.println("Artista externo agregado correctamente");
 
             } else {
-                System.out.println("Este es un artista base");
+                //System.out.println("Este es un artista base");
                 artistaBase.add((Artista) a);
                 // System.out.println("ArtistaBase agregado correctamente");
             }
-            System.out.println(a);
+           // System.out.println(a);
         }
 
-        System.out.println("--------------------------------------------------\n");
+
+    System.out.println("--------------------------------------------------\n");
 
         // ----------------------------- CARGAMOS LAS CANCIONES DEL RECITAL -----------------------------
 
@@ -168,9 +169,9 @@ public class App {
             System.out.println("2) Ver roles faltantes para todas las canciones");
             System.out.println("3) Contratar artistas para Somebody to love");
             System.out.println("4) Contratar artistas para todas las canciones");
-            System.out.println("5) Entrenar artista (Voz principal)");
+            System.out.println("5) Entrenar artista (George Micahel) (GUITARRA_ELECTRICA)");
             System.out.println("6) Listar artistas contratados");
-            System.out.println("7) Listar canciones y su estado (No disponible aun). ");
+            System.out.println("7) Listar canciones y su estado . ");
             System.out.println("8) [PROLOG] (no disponinble aun)");
             System.out.println("9) Salir");
             System.out.println("----------------------------------------------");
@@ -205,20 +206,21 @@ public class App {
                 break;
             case 5:{
                 ArtistaExterno david = recital.getArtistaExternos().get(0);
-                david.entrenar(Rol.VOZ_PRINCIPAL);
+                david.entrenar(Rol.GUITARRA_ELECTRICA);
                 System.out.println(david);
+
             }
                 break;
             case 6: {
                 Map<Artista, Integer> artistasContratados = recital.listarArtistasContratados();
                 for (Artista a : artistasContratados.keySet()) {
-                    System.out.println(a);
-                    System.out.println("Costo total: " + artistasContratados.get(a));
+                    System.out.println(a + "Costo total: " + artistasContratados.get(a));
+                    System.out.println("\n--------------------------------------------------\n");
                 }
             }
                 break;
             case 7:
-                // listarCancionesEstado();
+                recital.listarCanciones();
                 break;
             case 8:
                 // Prolog();

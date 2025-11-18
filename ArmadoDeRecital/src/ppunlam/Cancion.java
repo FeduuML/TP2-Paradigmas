@@ -9,8 +9,7 @@ public class Cancion {
 	String titulo;
 	List<Rol> rolesRequeridos = new LinkedList<>();
 	List<Participacion> participaciones = new LinkedList<Participacion>();
-    Map<Rol, Integer> rolesMap = new HashMap<>();
-	
+
 	public Cancion(String titulo, List<Rol> rolesRequeridos) {
 		this.titulo = titulo;
 		this.rolesRequeridos = rolesRequeridos;
@@ -98,6 +97,7 @@ public class Cancion {
                 agregarParticipacion(art, rol);
                 art.setActualCanciones(art.getActualCanciones() + 1);
                 todosArtistas.remove(art);
+                System.out.println("\n--------------------------------------------------\n");
             }
         });
     }
@@ -133,6 +133,7 @@ public class Cancion {
             }
             Artista a2 = Collections.min(artistasSinRol);
             ((ArtistaExterno) a2).entrenar(rol);
+
             return a2;
         }
 
@@ -145,7 +146,6 @@ public class Cancion {
         Artista a2 = Collections.min(artistasSinRol);
 
         if(a1.getCosto() < ((int)a2.getCosto() * 1.5)) {
-            System.out.println(a1.getNombre() + " VA SIN ENTRENAR");
             return a1;
         }
         else{

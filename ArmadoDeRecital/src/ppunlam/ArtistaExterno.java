@@ -11,9 +11,10 @@ public class ArtistaExterno extends Artista implements Comparable<Artista>{
         if(!roles.contains(rol)){
             if(this.actualCanciones == 0) {
                 roles.add(rol);
+                int costoAux = this.costo;
                 this.costo = (int) ((double) this.costo * 1.5);
                 System.out.println("Entrenamiento exitoso! " + this.nombre + " agrego el rol de " + rol
-                + " y su costo aumento un 50%");
+                + " y su costo original " + costoAux +  " aumento un 50% y ahora es " + this.costo);
             }
             else
                 System.out.println("El artista ya esta contratado para alguna cancion");

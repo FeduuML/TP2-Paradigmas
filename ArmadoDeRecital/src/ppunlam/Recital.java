@@ -48,7 +48,23 @@ public class Recital {
         }
         return candidato.getCosto();
     }
-    
+
+    public void listarCanciones(){
+        for(Cancion c : canciones){
+            int costo = 0;
+            System.out.println(c);
+            System.out.println("Roles faltantes: " + c.rolesFaltantes() + "\n");
+            System.out.println("Artistas contratados: ");
+            for(Participacion p : c.participaciones){
+                costo = costo + p.getArtista().getCosto();
+                System.out.println(p.getArtista().getNombre());
+
+            }
+            System.out.println("Costo de la cancion: " + costo);
+            System.out.println("\n--------------------------------------------------\n");
+        }
+    }
+
     public HashMap<Rol,Integer> rolesFaltantes() {
     	Map<Rol, Integer> rolesRequeridos = new HashMap<>();
 
