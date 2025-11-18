@@ -79,7 +79,15 @@ public class App {
         Recital quilmes = new Recital("Quilmes Rock", canciones, artistaBase, artistasExt);
         System.out.println("Bienvenido al recital " + quilmes.getNombre());
         // System.out.println(quilmes.calcularCosto(artistasExt.get(0)));
-        
+
+        // ----------------------------- CONSULTAMOS QUE ROLES NOS FALTAN PARA PODER TOCAR TODAS LAS CANCIONES DEL RECITAL -----------------------------
+
+
+        System.out.println("\n--------------------------------------------------\n");
+
+        System.out.println("Roles requeridos del recital ");
+        System.out.println(quilmes.rolesFaltantes());
+
         System.out.println("\n--------------------------------------------------\n");
         
         // ----------------------------- CONSULTAMOS QUE ROLES NOS FALTAN PARA PODER TOCAR SOMEBODY TO LOVE (SIN BRIAN MAY) -----------------------------
@@ -91,14 +99,17 @@ public class App {
         System.out.println("\n--------------------------------------------------\n");
         
         // ----------------------------- ASIGNAMOS EL ROL DE GUITARRA ELECTRICA A BRIAN MAY -----------------------------
-        
+        Map<Rol, Integer> rolesFaltantes = new HashMap<>();
         System.out.println("Roles requeridos de la cancion '" + c.getTitulo() + "'");
         c.agregarParticipacion(BrianMay, Rol.GUITARRA_ELECTRICA);
+        rolesFaltantes = c.rolesFaltantes();
         System.out.println(c.rolesFaltantes());
-        
+        c.contratarArtistas(rolesFaltantes, artistasExt);
+        System.out.println("Roles requeridos de la cancion '" + c.getTitulo() + "'");
+        System.out.println(c.rolesFaltantes());
         System.out.println("\n--------------------------------------------------\n");
         
-        // ----------------------------- CONSULTAMOS QUE ROLES NOS FALTAN PARA PODER TOCAR TODAS LAS CANCIONES DEL RECITAL -----------------------------
+        // ----------------------------- VOLVEMOS A CONSULTAR QUE ROLES NOS FALTAN PARA PODER TOCAR TODAS LAS CANCIONES DEL RECITAL  -----------------------------
         
         System.out.println("Roles requeridos del recital ");
         System.out.println(quilmes.rolesFaltantes());

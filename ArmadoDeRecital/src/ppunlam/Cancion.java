@@ -69,27 +69,64 @@ public class Cancion {
 		return new HashMap<>(rolesReq);
 	}
 
-    public void contratarArtistas(Map<Rol, Integer> rolesFaltantes, List<Artista> artistasDisp) {
+    public void contratarArtistas(Map<Rol, Integer> rolesFaltantes, List<ArtistaExterno> artistasDisp) {
         rolesFaltantes.forEach((rol, cant) -> {
-            while(this.rolesFaltantes().get(rol) > 0){
-                Artista art = seleccionarArtista(artistasDisp, rol);
-                this.rolesFaltantes().put(rol, rolesFaltantes.get(rol) - 1);
-                Participacion p = new Participacion(art, rol);
+            while(rolesFaltantes.get(rol) > 0) {
+                ArtistaExterno art = seleccionarArtista(artistasDisp, rol);
+                System.out.println(art.getNombre() + " fue contratado para ser " + rol);
+                rolesFaltantes.put(rol, rolesFaltantes.get(rol) - 1);
+                agregarParticipacion(art, rol);
+                art.setActualCanciones(art.getActualCanciones() + 1);
+                artistasDisp.remove(art);
             }
-        }
+        });
     }
 
-    public Artista seleccionarArtista(List<Artista> artistasDisp, Rol rol){
-        List<Artista> artistasRol = artistasDisp.stream().filter(a->a.getRoles().contains(rol)).toList();
-        Artista a1 = Collections.min(artistasRol);
-        List<Artista> artistasRol2 = artistasDisp.stream().filter(a->!a.getRoles().contains(rol)).toList();
-        artistasRol2.remove(a1);
-        Artista a2 = Collections.min(artistasRol2);
 
-        if(a1.getCosto() < ((int)a2.getCosto() * 1.5))
-            return a1;
-        else
+    public ArtistaExterno seleccionarArtista(List<ArtistaExterno> artistasDisp, Rol rol){
+        //artistas que tienen el rol
+        System.out.println("\n=== Artistas disponibles ===");
+        artistasDisp.forEach(a -> System.out.println(a.getNombre() + " -> Roles: " + a.getRoles()));
+        System.out.println("Buscando rol: " + rol);
+
+        List<ArtistaExterno> artistasConRol = artistasDisp.stream()
+                .filter(a -> a.getRoles().contains(rol))
+                .toList();
+
+        System.out.println("Encontrados con ROL : " + artistasConRol.size());
+
+
+        // artistas que NO tienen el rol
+        List<ArtistaExterno> artistasSinRol = artistasDisp.stream().filter(a->!a.getRoles().contains(rol)).toList();
+        artistasSinRol = artistasSinRol.stream().filter(a->!this.participaciones.contains(a)).toList();
+        System.out.println("Encontrados sin ROL: " + artistasSinRol.size());
+
+        if(artistasConRol.isEmpty()) {
+            if(artistasSinRol.isEmpty()) {
+                return null; // excepcion...
+            }
+            ArtistaExterno a2 = Collections.min(artistasSinRol);
+            a2.entrenar(rol);
             return a2;
+        }
+
+        ArtistaExterno a1 = Collections.min(artistasConRol);
+
+        if(artistasSinRol.isEmpty()) {
+            return a1;
+        }
+
+        ArtistaExterno a2 = Collections.min(artistasSinRol);
+
+        if(a1.getCosto() < ((int)a2.getCosto() * 1.5)) {
+            System.out.println(a1.getNombre() + " VA SIN ENTRENAR");
+            return a1;
+        }
+        else{
+            a2.entrenar(rol);
+            return a2;
+        }
+
     }
 
 

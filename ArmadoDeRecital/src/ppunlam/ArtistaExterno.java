@@ -2,7 +2,7 @@ package ppunlam;
 
 import java.util.List;
 
-public class ArtistaExterno extends Artista{
+public class ArtistaExterno extends Artista implements Comparable<Artista>{
 	public ArtistaExterno(String nombre, List<Rol> roles, List<Banda> bandas, int costo, int maxCanciones) {
 		super(nombre, roles, bandas, costo, maxCanciones);
     }

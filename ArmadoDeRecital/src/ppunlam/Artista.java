@@ -137,6 +137,10 @@ public class Artista implements Comparable<Artista>{
         return actualCanciones;
     }
 
+    public void setActualCanciones(int actualCanciones) {
+        this.actualCanciones = actualCanciones;
+    }
+
     public int getMaxCanciones() {
         return maxCanciones;
     }
