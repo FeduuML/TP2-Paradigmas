@@ -42,8 +42,13 @@ public class App {
 
         List<Cancion> canciones = Cancion.cargarCanciones("in/recital.json");
 
-        // ----------------------------- LISTA DE CANCIONES DEL RECITAL -----------------------------
 
+
+
+
+
+        // ----------------------------- LISTA DE CANCIONES DEL RECITAL -----------------------------
+        /*
         System.out.println("LISTADO DE CANCIONES\n");
         for (Cancion c : canciones) {
             System.out.println(c);
@@ -138,16 +143,20 @@ public class App {
             System.out.println("Costo total: " + artistasContratados.get(a));
         }
 
-
+*/
         /*
         	Roles requeridos del recital 
         	{BATERIA=4, PIANO=1, BAJO=4, VOZ_PRINCIPAL=5, GUITARRA_ELECTRICA=4}
         	Roles requeridos de la cancion Somebody to Love
         	{BATERIA=1, PIANO=1, VOZ_PRINCIPAL=1, BAJO=1}
         */
+        Recital quilmes = new Recital("Quilmes Rock", canciones, artistaBase, artistasExt);
+        menuRecital(quilmes);
+
 	}
+
 	
-	public static void menuRecital() {
+	public static void menuRecital(Recital recital){
 		Scanner sc = new Scanner(System.in);
 		int opcion;
 		
@@ -155,14 +164,14 @@ public class App {
             System.out.println("----------------------------------------------");
             System.out.println("               MENÚ DEL RECITAL");
             System.out.println("----------------------------------------------");
-            System.out.println("1) Ver roles faltantes para una canción");
+            System.out.println("1) Ver roles faltantes para la canción Somebody to Love");
             System.out.println("2) Ver roles faltantes para todas las canciones");
-            System.out.println("3) Contratar artistas para una canción");
+            System.out.println("3) Contratar artistas para Somebody to love");
             System.out.println("4) Contratar artistas para todas las canciones");
-            System.out.println("5) Entrenar artista");
+            System.out.println("5) Entrenar artista (Voz principal)");
             System.out.println("6) Listar artistas contratados");
-            System.out.println("7) Listar canciones y su estado");
-            System.out.println("8) [PROLOG]");
+            System.out.println("7) Listar canciones y su estado (No disponible aun). ");
+            System.out.println("8) [PROLOG] (no disponinble aun)");
             System.out.println("9) Salir");
             System.out.println("----------------------------------------------");
             System.out.print("Seleccione una opción: ");
@@ -172,23 +181,41 @@ public class App {
             System.out.println();
             
             switch (opcion) {
-            case 1:
-                // rolesFaltantesCancion();
+            case 1:{
+                Cancion c = recital.getCanciones().get(0);
+                System.out.println("Roles requeridos de la cancion '" + c.getTitulo() + "'");
+                System.out.println(c.rolesFaltantes());
+                System.out.println("\n--------------------------------------------------\n");
+            }
                 break;
-            case 2:
-                // rolesFaltantesTodas();
+            case 2: {
+                System.out.println("Roles requeridos del recital ");
+                System.out.println(recital.rolesFaltantes());
+            }
                 break;
-            case 3:
-                // contratarParaCancion();
+            case 3:{
+                Cancion c = recital.getCanciones().get(0);
+                c.contratarArtistas(recital.getArtistaExternos(), recital.getArtistasBase());
+            }
                 break;
-            case 4:
-                // contratarTodasLasCanciones();
+            case 4: {
+                System.out.println("Contratamos artistas para todo el recital: ");
+                recital.contratarArtistasRecital();
+            }
                 break;
-            case 5:
-                // entrenarArtista();
+            case 5:{
+                ArtistaExterno david = recital.getArtistaExternos().get(0);
+                david.entrenar(Rol.VOZ_PRINCIPAL);
+                System.out.println(david);
+            }
                 break;
-            case 6:
-                // listarArtistasContratados();
+            case 6: {
+                Map<Artista, Integer> artistasContratados = recital.listarArtistasContratados();
+                for (Artista a : artistasContratados.keySet()) {
+                    System.out.println(a);
+                    System.out.println("Costo total: " + artistasContratados.get(a));
+                }
+            }
                 break;
             case 7:
                 // listarCancionesEstado();
