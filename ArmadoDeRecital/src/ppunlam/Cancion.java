@@ -105,8 +105,8 @@ public class Cancion {
 
     public Artista seleccionarArtista(List<Artista> artistasDisp, Rol rol){
         //artistas que tienen el rol
-        System.out.println("\n=== Artistas disponibles ===");
-        artistasDisp.forEach(a -> System.out.println(a.getNombre() + " -> Roles: " + a.getRoles()));
+       // System.out.println("\n=== Artistas disponibles ===");
+        //artistasDisp.forEach(a -> System.out.println(a.getNombre() + " -> Roles: " + a.getRoles()));
         System.out.println("Buscando rol: " + rol);
 
         List<Artista> artistasConRol = artistasDisp.stream()
@@ -115,7 +115,7 @@ public class Cancion {
                 .filter(a -> a.getActualCanciones() < a.getMaxCanciones())
                 .toList();
 
-        System.out.println("Encontrados CON rol, sin participaciones y con canciones dispnibles : " + artistasConRol.size());
+        //System.out.println("Encontrados CON rol, sin participaciones y con canciones dispnibles : " + artistasConRol.size());
 
 
         // artistas que NO tienen el rol
@@ -125,7 +125,7 @@ public class Cancion {
                 .filter(a -> a.getActualCanciones() < a.getMaxCanciones())
                 .filter(a -> a instanceof ArtistaExterno)
                 .toList();
-        System.out.println("Encontrados SIN rol, sin participaciones y con canciones dispnibles: " + artistasSinRol.size());
+        //System.out.println("Encontrados SIN rol, sin participaciones y con canciones dispnibles: " + artistasSinRol.size());
 
         if(artistasConRol.isEmpty()) {
             if(artistasSinRol.isEmpty()) {

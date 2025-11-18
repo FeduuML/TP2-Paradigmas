@@ -102,7 +102,17 @@ public class App {
         c.agregarParticipacion(BrianMay, Rol.GUITARRA_ELECTRICA);
         rolesFaltantes = c.rolesFaltantes();
         System.out.println(c.rolesFaltantes());
+        System.out.println("Artistas contratados ");
+
+        System.out.println(quilmes.listarArtistasContratados());
+        System.out.println("\n--------------------------------------------------\n");
+
         c.contratarArtistas(artistasExt, artistaBase);
+
+        System.out.println("Artistas contratados ");
+        System.out.println(quilmes.listarArtistasContratados());
+        System.out.println("\n--------------------------------------------------\n");
+
         System.out.println("Roles requeridos de la cancion '" + c.getTitulo() + "'");
         System.out.println(c.rolesFaltantes());
         System.out.println("\n--------------------------------------------------\n");
@@ -117,9 +127,17 @@ public class App {
         // ----------------------------- VOLVEMOS A CONSULTAR QUE ROLES NOS FALTAN PARA PODER TOCAR TODAS LAS CANCIONES DEL RECITAL  -----------------------------
 
         System.out.println("Contratamos artistas para todo el recital PROBANDO: ");
-        quilmes.contratarArtistasRecital(artistasExt, artistaBase);
+        quilmes.contratarArtistasRecital();
         System.out.println("Roles requeridos del recital ");
         System.out.println(quilmes.rolesFaltantes());
+
+        System.out.println("Artistas contratados ");
+        Map<Artista, Integer> artistasContratados = quilmes.listarArtistasContratados();
+        for(Artista a : artistasContratados.keySet()) {
+            System.out.println(a);
+            System.out.println("Costo total: " + artistasContratados.get(a));
+        }
+
 
         /*
         	Roles requeridos del recital 

@@ -110,7 +110,8 @@ public class Artista implements Comparable<Artista>{
 	
 	@Override
 	public String toString() {
-        return "Nombre: " + nombre + "\nRoles: " + roles + "\nBandas: " + bandas + "\nCosto: " + costo + "\nMaxCanciones: " + maxCanciones + "\n";
+        return "Nombre: " + nombre + "\nRoles: " + roles + "\nBandas: " + bandas + "\nCosto: " + costo +
+                "\nMaxCanciones: " + maxCanciones  + "\nCanciones totales que performa: " + actualCanciones + "\n";
     }
 
     public String getNombre() {

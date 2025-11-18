@@ -3,22 +3,19 @@ package ppunlam;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Recital {
 	private String nombre;
 	private List<Cancion> canciones = new LinkedList<>();
     private List<Artista> artistasBase = new LinkedList<Artista>();
-    private List<ArtistaExterno> artistaExternos =  new LinkedList<ArtistaExterno>();
+    private List<ArtistaExterno> artistasExternos =  new LinkedList<ArtistaExterno>();
 
     public Recital(String nombre, List<Cancion> canciones, List<Artista> artistasBase, List<ArtistaExterno> artistaExternos) {
         this.nombre = nombre;
         this.canciones = canciones;
         this.artistasBase = artistasBase;
-        this.artistaExternos = artistaExternos;
+        this.artistasExternos = artistaExternos;
     }
 
     public void agregarCancion(Cancion cancion) throws RuntimeException{
@@ -66,11 +63,27 @@ public class Recital {
         return new HashMap<>(rolesRequeridos);
     }
 
-public void contratarArtistasRecital(List<ArtistaExterno> artistasExt, List<Artista> artistasBase){
+public void contratarArtistasRecital(){
         for(Cancion c : canciones){
             System.out.println("CANCION A CONTRATAR: " + c.getTitulo());
-            c.contratarArtistas(artistasExt, artistasBase);
+            c.contratarArtistas(artistasExternos, artistasBase);
         }
+}
+
+public Map<Artista, Integer> listarArtistasContratados(){
+        Map<Artista, Integer> artistasContratados = new HashMap<>();
+        for(Cancion c : canciones){
+            for(Participacion p : c.participaciones){
+                if(!artistasContratados.containsKey(p.getArtista())) {
+                    artistasContratados.put(p.getArtista(), p.getArtista().getCosto());
+                }
+                else{
+                    artistasContratados.put(p.getArtista(), artistasContratados.get(p.getArtista()) + p.getArtista().getCosto());
+                }
+            }
+        }
+
+        return artistasContratados;
 }
 
 	public String getNombre() {
@@ -90,6 +103,6 @@ public void contratarArtistasRecital(List<ArtistaExterno> artistasExt, List<Arti
 	}
 
 	public List<ArtistaExterno> getArtistaExternos() {
-		return artistaExternos;
+		return artistasExternos;
 	}
 }
