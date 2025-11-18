@@ -1,9 +1,6 @@
 package ppunlam;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -72,6 +69,31 @@ public class Cancion {
 		return new HashMap<>(rolesReq);
 	}
 
+    public void contratarArtistas(Map<Rol, Integer> rolesFaltantes, List<Artista> artistasDisp) {
+        rolesFaltantes.forEach((rol, cant) -> {
+            while(this.rolesFaltantes().get(rol) > 0){
+                Artista art = seleccionarArtista(artistasDisp, rol);
+                this.rolesFaltantes().put(rol, rolesFaltantes.get(rol) - 1);
+                Participacion p = new Participacion(art, rol);
+            }
+        }
+    }
+
+    public Artista seleccionarArtista(List<Artista> artistasDisp, Rol rol){
+        List<Artista> artistasRol = artistasDisp.stream().filter(a->a.getRoles().contains(rol)).toList();
+        Artista a1 = Collections.min(artistasRol);
+        List<Artista> artistasRol2 = artistasDisp.stream().filter(a->!a.getRoles().contains(rol)).toList();
+        artistasRol2.remove(a1);
+        Artista a2 = Collections.min(artistasRol2);
+
+        if(a1.getCosto() < ((int)a2.getCosto() * 1.5))
+            return a1;
+        else
+            return a2;
+    }
+
+
+
 	public static Cancion jsonToCancion(JSONObject json) {		
 		String titulo = (String) json.get("titulo");
 		
@@ -85,7 +107,6 @@ public class Cancion {
 	    
 	    return new Cancion(titulo, roles);
 	}
-	
 	@Override
 	public String toString() {
         return "Titulo: " + titulo + "\nRoles requeridos: " + rolesRequeridos + "\n";

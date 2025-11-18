@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class Artista {
+public class Artista implements Comparable<Artista>{
 	String nombre;
 	List<Rol> roles = new LinkedList<>();
 	List<Banda> bandas = new LinkedList<>();
@@ -139,5 +139,10 @@ public class Artista {
 
     public int getMaxCanciones() {
         return maxCanciones;
+    }
+
+    @Override
+    public int compareTo(Artista o) {
+        return (Integer.compare(this.costo, o.costo));
     }
 }
