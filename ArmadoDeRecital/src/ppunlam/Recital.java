@@ -66,6 +66,13 @@ public class Recital {
         return new HashMap<>(rolesRequeridos);
     }
 
+public void contratarArtistasRecital(List<ArtistaExterno> artistasExt, List<Artista> artistasBase){
+        for(Cancion c : canciones){
+            System.out.println("CANCION A CONTRATAR: " + c.getTitulo());
+            c.contratarArtistas(artistasExt, artistasBase);
+        }
+}
+
 	public String getNombre() {
 		return nombre;
 	}
