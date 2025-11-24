@@ -1,10 +1,12 @@
 package ppunlam;
 
 import java.util.HashMap;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
 
 public class App {
 	public static void main(String[] args) {
@@ -165,11 +167,11 @@ public class App {
             System.out.println("----------------------------------------------");
             System.out.println("               MENÚ DEL RECITAL");
             System.out.println("----------------------------------------------");
-            System.out.println("1) Ver roles faltantes para la canción Somebody to Love");
+            System.out.println("1) Ver roles faltantes para una cancion");
             System.out.println("2) Ver roles faltantes para todas las canciones");
-            System.out.println("3) Contratar artistas para Somebody to love");
+            System.out.println("3) Contratar artistas para una cancion");
             System.out.println("4) Contratar artistas para todas las canciones");
-            System.out.println("5) Entrenar artista (George Micahel) (GUITARRA_ELECTRICA)");
+            System.out.println("5) Entrenar artista seleccionado");
             System.out.println("6) Listar artistas contratados");
             System.out.println("7) Listar canciones y su estado . ");
             System.out.println("8) [PROLOG] (no disponinble aun)");
@@ -183,7 +185,24 @@ public class App {
             
             switch (opcion) {
             case 1:{
-                Cancion c = recital.getCanciones().get(0);
+            	
+            	Cancion c;
+            	sc.nextLine();
+            	do {
+            		System.out.println("Seleccione el nombre de la cancion:");
+            		String nombre=sc.nextLine();
+            		c = recital.getCanciones().stream()
+                			.filter(a -> a.getTitulo().equalsIgnoreCase(nombre))
+                		    .findFirst()
+                		    .orElse(null);
+            		 if (c == null) {
+            	            System.out.println("No existe esa cancion, seleccione una distinta.");
+            	        }
+            	}while(c==null);
+            	
+            	
+            	
+                
                 System.out.println("Roles requeridos de la cancion '" + c.getTitulo() + "'");
                 System.out.println(c.rolesFaltantes());
                 System.out.println("\n--------------------------------------------------\n");
@@ -195,8 +214,20 @@ public class App {
             }
                 break;
             case 3:{
-                Cancion c = recital.getCanciones().get(0);
-                c.contratarArtistas(recital.getArtistaExternos(), recital.getArtistasBase());
+            	Cancion c;
+            	sc.nextLine();
+            	do {
+            		System.out.println("Seleccione el nombre de la cancion:");
+            		String nombre=sc.nextLine();
+            		c = recital.getCanciones().stream()
+                			.filter(a -> a.getTitulo().equalsIgnoreCase(nombre))
+                		    .findFirst()
+                		    .orElse(null);
+            		 if (c == null) {
+            	            System.out.println("No existe esa cancion, seleccione una distinta.");
+            	        }
+            	}while(c==null);
+            	c.contratarArtistas(recital.getArtistaExternos(), recital.getArtistasBase());
             }
                 break;
             case 4: {
@@ -205,9 +236,22 @@ public class App {
             }
                 break;
             case 5:{
-                ArtistaExterno david = recital.getArtistaExternos().get(0);
-                david.entrenar(Rol.GUITARRA_ELECTRICA);
-                System.out.println(david);
+            	ArtistaExterno artistaSel;
+            	sc.nextLine();
+            	do {
+            		System.out.println("Seleccione el nombre del artista:");
+            		String nombre=sc.nextLine();
+            		artistaSel = recital.getArtistaExternos().stream()
+                			.filter(a -> a.getNombre().equalsIgnoreCase(nombre))
+                		    .findFirst()
+                		    .orElse(null);
+            		 if (artistaSel == null) {
+            	            System.out.println("No existe ese artista, seleccione uno distinto.");
+            	        }
+            	}while(artistaSel==null);
+                
+                artistaSel.entrenar(Rol.GUITARRA_ELECTRICA);
+                System.out.println(artistaSel);
 
             }
                 break;
@@ -222,8 +266,14 @@ public class App {
             case 7:
                 recital.listarCanciones();
                 break;
-            case 8:
-                // Prolog();
+            case 8:{
+            	/*int entrenamientos = PrologIntegracion.calcularEntrenamientosMinimos(
+            	        rolesRequeridos,
+            	        artistas
+            	);
+
+            	System.out.println("Entrenamientos minimos: " + entrenamientos);*/
+            }
                 break;
             case 9:
             	System.exit(0);
