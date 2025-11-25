@@ -127,6 +127,7 @@ public class App {
                 break;
             case 5:{
             	ArtistaExterno artistaSel;
+            	Rol rol;
             	sc.nextLine();
             	do {
             		System.out.println("Seleccione el nombre del artista:");
@@ -139,8 +140,19 @@ public class App {
             	            System.out.println("No existe ese artista, seleccione uno distinto.");
             	        }
             	}while(artistaSel==null);
+            	
+            	
+            	
+            	do {
+            		System.out.println("Seleccione el rol a asignar:");
+            		String nombre=sc.nextLine();
+            		rol=Rol.pasarStringRol(nombre);
+            		 if (rol == null) {
+            	            System.out.println("No existe ese rol, seleccione uno distinto.");
+            	        }
+            	}while(rol==null);
                 
-                artistaSel.entrenar(Rol.GUITARRA_ELECTRICA);
+                artistaSel.entrenar(rol);
                 System.out.println(artistaSel);
 
             }
