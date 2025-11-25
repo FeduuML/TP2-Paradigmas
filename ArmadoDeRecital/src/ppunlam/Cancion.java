@@ -14,21 +14,6 @@ public class Cancion {
 		this.titulo = titulo;
 		this.rolesRequeridos = rolesRequeridos;
 	}
-/*
-    public void listToMap() {
-        for (Rol rol : this.rolesRequeridos) {
-            if (!this.rolesMap.containsKey(rol)) {
-                rolesMap.put(rol, 1);
-            }
-            else{
-                rolesMap.put(rol, rolesMap.get(rol) + 1);
-            }
-        }
-        System.out.println("Roles requeridos de la cancion ");
-        System.out.println(rolesMap.toString());
-    }
-
- */
 	
 	public static List<Cancion> cargarCanciones(String path) {
 	    List<Cancion> canciones = new LinkedList<>();

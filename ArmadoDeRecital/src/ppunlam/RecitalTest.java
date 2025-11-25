@@ -16,7 +16,6 @@ public class RecitalTest {
 
     @BeforeEach
     void setUp() {
-        // === Artistas Base ===
         base1 = new Artista("Juan",
                 List.of(Rol.GUITARRA_ELECTRICA),
                 List.of(new Banda("B1")),
@@ -27,7 +26,6 @@ public class RecitalTest {
                 List.of(new Banda("B1")),
                 120, 5);
 
-        // === Artistas Externos ===
         ext1 = new ArtistaExterno("Laura",
                 new LinkedList<>(List.of(Rol.VOZ_PRINCIPAL)),
                 List.of(new Banda("B2")),
@@ -38,7 +36,7 @@ public class RecitalTest {
                 List.of(new Banda("B3")),
                 150, 5);
 
-        // === Canciones ===
+        //  Canciones 
         c1 = new Cancion("Cancion 1",
                 new LinkedList<>(List.of(
                         Rol.GUITARRA_ELECTRICA,
@@ -60,9 +58,7 @@ public class RecitalTest {
         );
     }
 
-    // ============================================================================
     // 1) Roles faltantes de UNA canción
-    // ============================================================================
     @Test
     void testRolesFaltantesCancion() {
         HashMap<Rol, Integer> faltantes = c1.rolesFaltantes();
@@ -73,9 +69,8 @@ public class RecitalTest {
         assertEquals(1, faltantes.get(Rol.VOZ_PRINCIPAL));
     }
 
-    // ============================================================================
-    // 2) Roles faltantes de TODO el recital
-    // ============================================================================
+    // 2) Roles faltantes de todo el recital
+
     @Test
     void testRolesFaltantesRecital() {
         HashMap<Rol, Integer> faltantes = recital.rolesFaltantes();
@@ -87,9 +82,9 @@ public class RecitalTest {
         assertEquals(1, faltantes.get(Rol.COROS));
     }
 
-    // ============================================================================
+
     // 3) Contratar artistas para UNA canción
-    // ============================================================================
+
     @Test
     void testContratarArtistasCancion() {
         c1.contratarArtistas(recital.getArtistaExternos(), recital.getArtistasBase());
@@ -97,9 +92,7 @@ public class RecitalTest {
         assertEquals(3, c1.participaciones.size());
     }
 
-    // ============================================================================
     // 4) Contratar artistas para TODAS las canciones
-    // ============================================================================
     @Test
     void testContratarArtistasRecital() {
         recital.contratarArtistasRecital();
@@ -108,9 +101,7 @@ public class RecitalTest {
         assertEquals(2, c2.participaciones.size());
     }
 
-    // ============================================================================
     // 5) Entrenar artista externo
-    // ============================================================================
     @Test
     void testEntrenarArtista() {
         assertFalse(ext2.getRoles().contains(Rol.COROS));
@@ -118,12 +109,10 @@ public class RecitalTest {
         ext2.entrenar(Rol.COROS);
 
         assertTrue(ext2.getRoles().contains(Rol.COROS));
-        assertEquals(225, ext2.getCosto());  // 150 * 1.5
+        assertEquals(225, ext2.getCosto());  
     }
 
-    // ============================================================================
     // 6) Listar artistas contratados
-    // ============================================================================
     @Test
     void testListarArtistasContratados() {
         recital.contratarArtistasRecital();
@@ -132,9 +121,7 @@ public class RecitalTest {
         assertTrue(contratados.size() >= 3);
     }
 
-    // ============================================================================
     // 7) Listar canciones y estado
-    // ============================================================================
     @Test
     void testListarCanciones() {
         // solo verificamos que no explote
@@ -142,25 +129,23 @@ public class RecitalTest {
     }
     
     
- // ============================================================================
- // TEST: Artista no puede ser contratado si llegó al máximo de canciones
- // ============================================================================
+ //  Artista no puede ser contratado si llegó al máximo de canciones
+
  @Test
  void testArtistaNoDisponiblePorMaxCanciones() {
-     base1.setActualCanciones(5);  // Ya llegó al límite
+     base1.setActualCanciones(5);  // se llego al limite
      
      c1.contratarArtistas(recital.getArtistaExternos(), recital.getArtistasBase());
      
-     // base1 NO debería estar en las participaciones
+
      boolean base1Contratado = c1.participaciones.stream()
          .anyMatch(p -> p.getArtista().equals(base1));
      
      assertFalse(base1Contratado, "base1 no debería ser contratado (máximo alcanzado)");
  }
 
- // ============================================================================
- // TEST: No se puede entrenar si el artista ya tiene el rol
- // ============================================================================
+
+ // No se puede entrenar si el artista ya tiene el rol
  @Test
  void testNoEntrenarRolExistente() {
      ext1.entrenar(Rol.VOZ_PRINCIPAL);  // Ya lo tiene
@@ -169,9 +154,9 @@ public class RecitalTest {
      assertEquals(200, ext1.getCosto());
  }
 
- // ============================================================================
+
  // TEST: Artista externo sin rol necesita entrenamiento
- // ============================================================================
+
  @Test
  void testExternoSinRolNecesitaEntrenamiento() {
      // ext2 no tiene roles
@@ -184,9 +169,9 @@ public class RecitalTest {
      assertTrue(ext2.getRoles().contains(Rol.PIANO));
  }
 
- // ============================================================================
+
  // TEST: No se puede agregar el mismo artista dos veces a una canción
- // ============================================================================
+
  @Test
  void testNoAgregarArtistaDosVeces() {
      c1.agregarParticipacion(base1, Rol.GUITARRA_ELECTRICA);
