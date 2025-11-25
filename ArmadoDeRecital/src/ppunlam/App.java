@@ -266,14 +266,22 @@ public class App {
             case 7:
                 recital.listarCanciones();
                 break;
-            case 8:{
-            	/*int entrenamientos = PrologIntegracion.calcularEntrenamientosMinimos(
-            	        rolesRequeridos,
-            	        artistas
-            	);
 
-            	System.out.println("Entrenamientos minimos: " + entrenamientos);*/
-            }
+                case 8: {
+                    System.out.println("Consulta en prolog: \n");
+
+                    PrologIntegracion prolog = new PrologIntegracion();
+
+                    int entrenamientos = prolog.calcularEntrenamientosMinimos(recital);
+
+                    if (entrenamientos >= 0) {
+                        System.out.println("\n Entrenamientos mínimos necesarios (roles que ningun artista base puede cubrir): " + entrenamientos);
+                    } else {
+                        System.out.println("\n Error al calcular entrenamientos");
+                    }
+
+                    System.out.println("\n--------------------------------------------------\n");
+                }
                 break;
             case 9:
             	System.exit(0);

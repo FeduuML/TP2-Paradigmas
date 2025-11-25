@@ -1,10 +1,7 @@
 package ppunlam;
-import alice.tuprolog.*;
-import java.io.*;
-import java.util.LinkedList;
-import java.util.List;
 
-import java.util.Set;
+import alice.tuprolog.*;
+import java.util.*;
 
 public class PrologIntegracion {
 
@@ -14,89 +11,108 @@ public class PrologIntegracion {
         engine = new Prolog();
     }
 
-    /**
-     * Construye y carga la base de conocimiento en Prolog
-     */
-    public void cargarHechos(
-            List<MiembroBase> miembrosBase,
-            List<ArtistaExterno> artistasExternos,
-            Recital recital,
-            int costoEntrenamientoBase
-    ) throws Exception {
+    public int calcularEntrenamientosMinimos(Recital recital) {
+        try {
 
-        StringBuilder pl = new StringBuilder();
+            StringBuilder teoria = new StringBuilder();
 
-        // ----- HECHOS: ROLES REQUERIDOS POR EL RECITAL -----
+            // Reglas
 
-        Set<Rol> rolesTotales = recital.getCanciones().stream()
-                .flatMap(c -> c.getRolesRequeridos().stream())
-                .collect(java.util.stream.Collectors.toSet());
+            //Un artista base sabe un rol si está en su lista de roles
+            teoria.append("sabe_rol(artista_base(_, Roles), Rol) :- \n");
+            teoria.append("    member(Rol, Roles).\n\n");
 
-        for (Rol rol : rolesTotales) {
-            pl.append("rol_requerido(")
-                    .append(rol.name().toLowerCase())
-                    .append(").\n");
-        }
+           // Un artista contratado no sabe ningún rol
+            teoria.append("sabe_rol(artista_contratado(_), _) :- \n");
+            teoria.append("    fail.\n\n");
 
-        // ----- HECHOS: ROLES QUE CUBRE CADA MIEMBRO BASE -----
+            //Se necesita entrenamiento para un rol si ningún artista lo sabe
+            teoria.append("entreno_necesario(Rol, Artistas) :- \n");
+            teoria.append("    \\+ (member(A, Artistas), sabe_rol(A, Rol)).\n\n");
 
-        for (MiembroBase m : miembrosBase) {
-            for (Rol rol : m.getRoles()) {
-                pl.append("puede(")
-                        .append(m.getNombre().toLowerCase())
-                        .append(", ")
-                        .append(rol.name().toLowerCase())
-                        .append(").\n");
+            //Contar todos los entrenamientos necesarios
+            teoria.append("entrenamientos_necesarios(Artistas, Roles, E) :- \n");
+            teoria.append("    findall(1, (member(R, Roles), entreno_necesario(R, Artistas)), L), \n");
+            teoria.append("    length(L, E).\n\n");
+
+            engine.setTheory(new Theory(teoria.toString()));
+
+
+            Set<Rol> rolesRequeridos = new HashSet<>();
+            for (Cancion c : recital.getCanciones()) {
+                rolesRequeridos.addAll(c.rolesRequeridos);
             }
+
+            StringBuilder listaArtistas = new StringBuilder("[");
+            List<Artista> todosArtistas = new ArrayList<>();
+            todosArtistas.addAll(recital.getArtistasBase());
+            todosArtistas.addAll(recital.getArtistaExternos());
+
+            for (int i = 0; i < todosArtistas.size(); i++) {
+                Artista a = todosArtistas.get(i);
+
+                if (a instanceof ArtistaExterno) {
+                    listaArtistas.append("artista_contratado('")
+                            .append(a.getNombre().toLowerCase())
+                            .append("')");
+                } else {
+                    StringBuilder roles = new StringBuilder("[");
+                    List<Rol> listaRoles = a.getRoles();
+                    for (int j = 0; j < listaRoles.size(); j++) {
+                        roles.append(listaRoles.get(j).name().toLowerCase());
+                        if (j < listaRoles.size() - 1) {
+                            roles.append(", ");
+                        }
+                    }
+                    roles.append("]");
+
+                    listaArtistas.append("artista_base('")
+                            .append(a.getNombre().toLowerCase())
+                            .append("', ")
+                            .append(roles.toString())
+                            .append(")");
+                }
+
+                if (i < todosArtistas.size() - 1) {
+                    listaArtistas.append(", ");
+                }
+            }
+            listaArtistas.append("]");
+
+            // lista de roles requeridos:
+            StringBuilder listaRoles = new StringBuilder("[");
+            List<Rol> roles = new ArrayList<>(rolesRequeridos);
+            for (int i = 0; i < roles.size(); i++) {
+                listaRoles.append(roles.get(i).name().toLowerCase());
+                if (i < roles.size() - 1) {
+                    listaRoles.append(", ");
+                }
+            }
+            listaRoles.append("]");
+
+            // ejecutar consulta
+            String consulta = String.format("entrenamientos_necesarios(%s, %s, E).",
+                    listaArtistas.toString(),
+                    listaRoles.toString());
+
+            System.out.println("Ejecutando consulta prolog:");
+            System.out.println(consulta);
+            System.out.println();
+
+            SolveInfo solucion = engine.solve(consulta);
+
+            if (solucion.isSuccess()) {
+                int entrenamientos = Integer.parseInt(solucion.getVarValue("E").toString());
+                return entrenamientos;
+            } else {
+                System.err.println("La consulta no tuvo éxito");
+                return -1;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al calcular entrenamientos: " + e.getMessage());
+            e.printStackTrace();
+            return -1;
         }
-
-        // ----- HECHOS: ARTISTAS EXTERNOS SIN EXPERIENCIA -----
-
-        for (ArtistaExterno a : artistasExternos) {
-            pl.append("externo(")
-                    .append(a.getNombre().toLowerCase())
-                    .append(", ")
-                    .append(costoEntrenamientoBase)
-                    .append(").\n");
-        }
-
-        // ----- REGLAS PROLOG: ENTRENAR = costo base -----
-
-        pl.append("\n");
-        pl.append("% Un externo puede cubrir cualquier rol si lo entrenás\n");
-        pl.append("puede_entrenado(X, Rol, Costo) :- externo(X, Costo).\n");
-
-        // ----- REGLAS: CUANTOS ENTRENAMIENTOS SE NECESITAN -----
-
-        pl.append("\n");
-        pl.append("% Rol está cubierto si lo puede alguien o si lo puede entrenado\n");
-        pl.append("cubierto(R) :- puede(_, R).\n");
-        pl.append("cubierto(R) :- puede_entrenado(_, R, _).\n");
-
-        pl.append("\n");
-        pl.append("% Contar roles no cubiertos por miembros base\n");
-        pl.append("roles_faltantes(Count) :- findall(R, (rol_requerido(R), \\+ puede(_,R)), L), length(L, Count).\n");
-
-        engine.clearTheory();
-        engine.setTheory(new Theory(pl.toString()));
-    }
-
-    /**
-     * Ejecuta la consulta principal: cuántos entrenamientos mínimos necesito
-     */
-    public int consultarEntrenamientosMinimos() throws Exception {
-        SolveInfo info = engine.solve("roles_faltantes(X).");
-
-        if (info.isSuccess()) {
-            return Integer.parseInt(info.getVarValue("X").toString());
-        }
-
-        return -1;
     }
 }
-
-
-
-
-
-
